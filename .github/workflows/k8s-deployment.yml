@@ -3,16 +3,16 @@ name: k8s-deployment
 on:
   push:
     branches:
-      - "main"
+      - main
 
 # Environment variables available to all jobs and steps in this workflow
 env:
   REGISTRY_NAME: nexploretestdeploy
-  CLUSTER_NAME: cpcs-pyramid-k8s
+  CLUSTER_NAME: docker-whale-k8s
   CLUSTER_RESOURCE_GROUP: nexplore_test_deploy
   NAMESPACE: default
   SECRET: nexploretestdeploy
-  APP_NAME: nodejs-helloworld
+  APP_NAME: blue-whale
 
 jobs:
   build:
@@ -31,6 +31,7 @@ jobs:
       - run: |
           docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ secrets.VERSION_TAG }}
 
       # Set the target Azure Kubernetes Service (AKS) cluster.
       - uses: azure/aks-set-context@v1
