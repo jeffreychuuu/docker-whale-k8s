@@ -31,6 +31,8 @@ jobs:
       - run: |
           docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ secrets.VERSION_TAG }}
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ secrets.VERSION_TAG }}
 
       # Set the target Azure Kubernetes Service (AKS) cluster.
       - uses: azure/aks-set-context@v1
