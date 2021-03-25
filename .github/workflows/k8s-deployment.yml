@@ -10,7 +10,7 @@ env:
   REGISTRY_NAME: nexploretestdeploy
   CLUSTER_NAME: docker-whale-k8s
   CLUSTER_RESOURCE_GROUP: nexplore_test_deploy
-  NAMESPACE: default
+  NAMESPACE: whale
   SECRET: nexploretestdeploy
   APP_NAME: blue-whale
 
