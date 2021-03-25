@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-helloworld-deployment
+  labels:
+    app: nodejs-helloworld
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodejs-helloworld
+  template:
+    metadata:
+      labels:
+        app: nodejs-helloworld
+    spec:
+      containers:
+        - name: nodejs-helloworld
+          image: nexploretestdeploy.azurecr.io/nodejs-helloworld
+          ports:
+            - containerPort: 3000
