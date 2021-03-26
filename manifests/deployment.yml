@@ -1,21 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-helloworld-deployment
+  namespace: ingress-basic
+  name: blue-whale
   labels:
-    app: nodejs-helloworld
+    app: blue-whale
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nodejs-helloworld
+      app: blue-whale
   template:
     metadata:
       labels:
-        app: nodejs-helloworld
+        app: blue-whale
     spec:
       containers:
-        - name: nodejs-helloworld
-          image: nexploretestdeploy.azurecr.io/nodejs-helloworld
+        - name: blue-whale
+          image: nexploretestdeploy.azurecr.io/blue-whale:dev
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ingress-basic
+  name: purple-whale
+  labels:
+    app: purple-whale
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: purple-whale
+  template:
+    metadata:
+      labels:
+        app: purple-whale
+    spec:
+      containers:
+        - name: purple-whale
+          image: hcwxd/purple-whale
           ports:
             - containerPort: 3000
