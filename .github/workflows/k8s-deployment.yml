@@ -59,6 +59,10 @@ jobs:
       - name: Helm tool installer
         uses: Azure/setup-helm@v1
 
+      # Add the ingress-nginx repository
+      - run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
       # Create Use Helm to deploy an NGINX ingress controller
       - run: |
           helm install nginx-ingress ingress-nginx/ingress-nginx \
