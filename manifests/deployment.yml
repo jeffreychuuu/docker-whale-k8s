@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
         - name: blue-whale
-          image: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ secrets.VERSION_TAG }}
+          image: nexploretestdeploy.azurecr.io/blue-whale:dev
           ports:
             - containerPort: 3000
       imagePullSecrets:
-        - name: ${{ env.SECRET }}
+        - name: acr-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
