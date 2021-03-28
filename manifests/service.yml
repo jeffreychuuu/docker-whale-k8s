@@ -4,14 +4,12 @@ metadata:
   namespace: ingress-basic
   name: blue-whale-service
 spec:
-  type: NodePort
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
   selector:
     app: blue-whale
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-      nodePort: 30000
 ---
 apiVersion: v1
 kind: Service
@@ -19,11 +17,9 @@ metadata:
   namespace: ingress-basic
   name: purple-whale-service
 spec:
-  type: NodePort
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
   selector:
     app: purple-whale
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-      nodePort: 30001
