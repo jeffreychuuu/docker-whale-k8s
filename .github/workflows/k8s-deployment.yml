@@ -10,7 +10,7 @@ env:
   REGISTRY_NAME: nexploretestdeploy
   CLUSTER_NAME: whale-k8s
   CLUSTER_RESOURCE_GROUP: nexplore_test_deploy
-  NAMESPACE: whale
+  NAMESPACE: ingress-basic
   SECRET: acr-secret
   APP_NAME: blue-whale
 
