@@ -8,10 +8,10 @@ on:
 # Environment variables available to all jobs and steps in this workflow
 env:
   REGISTRY_NAME: nexploretestdeploy
-  CLUSTER_NAME: docker-whale-k8s
+  CLUSTER_NAME: whale-k8s
   CLUSTER_RESOURCE_GROUP: nexplore_test_deploy
   NAMESPACE: whale
-  SECRET: src-secret
+  SECRET: acr-secret
   APP_NAME: blue-whale
 
 jobs:
@@ -55,15 +55,41 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           force: true
 
+      #Install Helm
+      - name: Helm tool installer
+        uses: Azure/setup-helm@v1
+
+      # Create Use Helm to deploy an NGINX ingress controller
+      - run: |
+          helm install nginx-ingress ingress-nginx/ingress-nginx \
+          --namespace ${{ env.NAMESPACE }} \
+          --set controller.replicaCount=2 \
+          --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+          --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+          --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+
       # Deploy app to AKS
       - uses: azure/k8s-deploy@v1.4
         with:
           manifests: |
-            manifests/deployment.yml
-            manifests/service.yml
-            manifests/ingress.yml
-          images: |
-            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          imagepullsecrets: |
-            ${{ env.SECRET }}
-          namespace: ${{ env.NAMESPACE }}
+            demo/aks-helloworld-one.yml
+            demo/aks-helloworld-two.yml
+            demo/hello-world-ingress.yml
+          # images: |
+          #   ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          # imagepullsecrets: |
+          #   ${{ env.SECRET }}
+          # namespace: ${{ env.NAMESPACE }}
+
+      # Deploy app to AKS
+      # - uses: azure/k8s-deploy@v1.4
+      #   with:
+      #     manifests: |
+      #       manifests/deployment.yml
+      #       manifests/service.yml
+      #       manifests/ingress.yml
+      #     images: |
+      #       ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+      #     imagepullsecrets: |
+      #       ${{ env.SECRET }}
+      #     namespace: ${{ env.NAMESPACE }}
