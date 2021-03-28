@@ -71,7 +71,6 @@ jobs:
           --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
           --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
           --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
-          --create-namespace
 
       # Deploy app to AKS
       - uses: azure/k8s-deploy@v1.4
