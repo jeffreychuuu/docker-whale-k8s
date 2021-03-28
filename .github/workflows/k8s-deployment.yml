@@ -79,6 +79,7 @@ jobs:
             demo/aks-helloworld-one.yml
             demo/aks-helloworld-two.yml
             demo/hello-world-ingress.yml
+          namespace: ${{ env.NAMESPACE }}
           # images: |
           #   ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           # imagepullsecrets: |
