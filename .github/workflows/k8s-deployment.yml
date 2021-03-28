@@ -55,36 +55,40 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           force: true
 
-      # #Install Helm
-      # - name: Helm tool installer
-      #   uses: Azure/setup-helm@v1
+      #Install Helm
+      - name: Helm tool installer
+        uses: Azure/setup-helm@v1
 
-      # # Add the ingress-nginx repository
-      # - run: |
-      #     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      # Add the ingress-nginx repository
+      - run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-      # # Create Use Helm to deploy an NGINX ingress controller
-      # - run: |
-      #     helm install nginx-ingress ingress-nginx/ingress-nginx \
-      #     --namespace ${{ env.NAMESPACE }} \
-      #     --set controller.replicaCount=2 \
-      #     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
-      #     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
-      #     --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+      # Create Use Helm to deploy an NGINX ingress controller
+      - run: |
+          helm install nginx-ingress ingress-nginx/ingress-nginx \
+          --namespace ${{ env.NAMESPACE }} \
+          --set controller.replicaCount=2 \
+          --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+          --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+          --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
+
+      # # Deploy app to AKS
+      # - uses: azure/k8s-deploy@v1.4
+      #   with:
+      #     manifests: |
+      #       demo/aks-helloworld-one.yml
+      #       demo/aks-helloworld-two.yml
+      #       demo/hello-world-ingress.yml
+      #     namespace: ${{ env.NAMESPACE }}
 
       # Deploy app to AKS
       - uses: azure/k8s-deploy@v1.4
         with:
           manifests: |
-            demo/aks-helloworld-one.yml
-            demo/aks-helloworld-two.yml
-            demo/hello-world-ingress.yml
+            manifests/deployment.yml
+            manifests/service.yml
+            manifests/ingress.yml
           namespace: ${{ env.NAMESPACE }}
-          # images: |
-          #   ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          # imagepullsecrets: |
-          #   ${{ env.SECRET }}
-          # namespace: ${{ env.NAMESPACE }}
 
       # Deploy app to AKS
       # - uses: azure/k8s-deploy@v1.4
