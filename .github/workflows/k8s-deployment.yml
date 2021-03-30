@@ -78,7 +78,7 @@ jobs:
           kubectl apply \
           -f manifests/deployment.yml \
           -f manifests/service.yml \
-          -f manifests/ingresss.yml \
+          -f manifests/ingress.yml \
           --namespace ${{ env.NAMESPACE }}
 
       # Deploy app to AKS
