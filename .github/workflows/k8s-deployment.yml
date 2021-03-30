@@ -75,9 +75,11 @@ jobs:
       # Deploy app to AKS
       - name: Deploy to AKS
         run: |
-          kubectl apply -f manifests/deployment.yml --namespace ${{ env.NAMESPACE }}
-          kubectl apply -f manifests/service.yml --namespace ${{ env.NAMESPACE }}
-          kubectl apply -f manifests/ingresss.yml --namespace ${{ env.NAMESPACE }}
+          kubectl apply \
+          -f manifests/deployment.yml \
+          -f manifests/service.yml \
+          -f manifests/ingresss.yml \
+          --namespace ${{ env.NAMESPACE }}
 
       # Deploy app to AKS
       # - uses: azure/k8s-deploy@v1.4
