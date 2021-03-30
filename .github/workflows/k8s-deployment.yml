@@ -55,6 +55,15 @@ jobs:
           namespace: ${{ env.NAMESPACE }}
           force: true
 
+      # Deploy app to AKS
+      - uses: azure/k8s-deploy@v1.4
+        with:
+          manifests: |
+            manifests/deployment.yml
+            manifests/service.yml
+            manifests/ingress.yml
+          namespace: ${{ env.NAMESPACE }}
+          
       #Install Helm
       - name: Helm tool installer
         uses: Azure/setup-helm@v1
@@ -71,15 +80,6 @@ jobs:
               --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
               --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
               --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
-
-      # Deploy app to AKS
-      - uses: azure/k8s-deploy@v1.4
-        with:
-          manifests: |
-            manifests/deployment.yml
-            manifests/service.yml
-            manifests/ingress.yml
-          namespace: ${{ env.NAMESPACE }}
 
       # Deploy app to AKS
       # - uses: azure/k8s-deploy@v1.4
