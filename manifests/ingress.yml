@@ -1,22 +1,28 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: whale-ingress
   namespace: ingress-basic
+  name: whale-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /static/$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-  - http:
-      paths:
-      - backend:
-          serviceName: blue-whale-service
-          servicePort: 80
-        path: /blue-whale
-      - backend:
-          serviceName: purple-whale-service
-          servicePort: 80
-        path: /purple-whale
+    - http:
+        paths:
+          - path: /blue-whale
+            pathType: Prefix
+            backend:
+              service:
+                name: blue-whale-service
+                port:
+                  number: 80
+          - path: /purple-whale
+            pathType: Prefix
+            backend:
+              service:
+                name: purple-whale-service
+                port:
+                  number: 80
